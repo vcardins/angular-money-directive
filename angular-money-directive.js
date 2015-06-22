@@ -36,9 +36,12 @@ angular.module('fiestah.money', [])
       return ngModelCtrl.$isEmpty(value) ? '' : '' + value;
     }
 
-    function minValidator(value) {
+    function minValidator(value, replaceBy) {
       if (!ngModelCtrl.$isEmpty(value) && value < min) {
         ngModelCtrl.$setValidity('min', false);
+        if (replaceBy) {
+          ngModelCtrl.$setViewValue(replaceBy);
+        }
         return undefined;
       } else {
         ngModelCtrl.$setValidity('min', true);
@@ -46,9 +49,12 @@ angular.module('fiestah.money', [])
       }
     }
 
-    function maxValidator(value) {
+    function maxValidator(value, replaceBy) {
       if (!ngModelCtrl.$isEmpty(value) && value > max) {
         ngModelCtrl.$setValidity('max', false);
+        if (replaceBy) {
+          ngModelCtrl.$setViewValue(replaceBy);
+        }
         return undefined;
       } else {
         ngModelCtrl.$setValidity('max', true);
@@ -98,7 +104,7 @@ angular.module('fiestah.money', [])
     // Min validation
     attrs.$observe('min', function (value) {
       min = parseFloat(value || 0);
-      minValidator(ngModelCtrl.$modelValue);
+      minValidator(ngModelCtrl.$modelValue, value);
     });
 
     ngModelCtrl.$parsers.push(minValidator);
@@ -107,9 +113,9 @@ angular.module('fiestah.money', [])
 
     // Max validation (optional)
     if (angular.isDefined(attrs.max)) {
-      attrs.$observe('max', function (val) {
-        max = parseFloat(val);
-        maxValidator(ngModelCtrl.$modelValue);
+      attrs.$observe('max', function (value) {
+        max = parseFloat(value);
+        maxValidator(ngModelCtrl.$modelValue, value);
       });
 
       ngModelCtrl.$parsers.push(maxValidator);
