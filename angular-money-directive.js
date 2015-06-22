@@ -36,11 +36,11 @@ angular.module('fiestah.money', [])
       return ngModelCtrl.$isEmpty(value) ? '' : '' + value;
     }
 
-    function minValidator(value, replaceBy) {
+    function minValidator(value) {
       if (!ngModelCtrl.$isEmpty(value) && value < min) {
         ngModelCtrl.$setValidity('min', false);
-        if (replaceBy) {
-          ngModelCtrl.$setViewValue(replaceBy);
+        if (attrs.replace) {
+          ngModelCtrl.$setViewValue(min);
         }
         return undefined;
       } else {
@@ -49,11 +49,11 @@ angular.module('fiestah.money', [])
       }
     }
 
-    function maxValidator(value, replaceBy) {
+    function maxValidator(value) {
       if (!ngModelCtrl.$isEmpty(value) && value > max) {
         ngModelCtrl.$setValidity('max', false);
-        if (replaceBy) {
-          ngModelCtrl.$setViewValue(replaceBy);
+        if (attrs.replace) {
+          ngModelCtrl.$setViewValue(max);
         }
         return undefined;
       } else {
